@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqldeploy
+  namespace: myns01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      name: mysqldb
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysqldatabase
+          ports:
+            - containerPort: 3306
+              name: mysqlport
+          image: mysql:5.7
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lampsecret
+                  key: rootpassword
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lampsecret
+                  key: userpassword
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: lampconfig
+                  key: user
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: lampconfig
+                  key: database
+          volumeMounts:
+            - name: mysqlvolume
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysqlvolume
+          persistentVolumeClaim:
+            claimName: mysqlpvc

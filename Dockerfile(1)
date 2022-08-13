@@ -1,0 +1,12 @@
+FROM centos:7
+MAINTAINER chingkingm@gmail.com
+#LAMP
+RUN yum install  httpd php php-mysqlnd php-gd -y 2> /dev/null   && \
+    sed -i 's/Listen 80/Listen 8080/g' /etc/httpd/conf/httpd.conf
+EXPOSE 8080
+ENV PATH  $PATH:/usr/local/bin
+COPY dist  /var/www/html/
+VOLUME /var/www/html
+WORKDIR /var/www/html
+CMD ["-DFOREGROUND"]
+ENTRYPOINT ["/usr/sbin/httpd"]

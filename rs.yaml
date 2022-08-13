@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: firstrs
+  namespace: myspace
+  labels:
+    app: rs
+spec:
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      name: rs-pod
+      labels:
+        app: demo
+    spec:
+      containers:
+        - name: demo
+          ports:
+            - containerPort: 80
+              name: httpdport80
+          image: httpd
+          imagePullPolicy: IfNotPresent

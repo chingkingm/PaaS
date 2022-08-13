@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxdeploy
+  namespace: myns01
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      name: web
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          ports:
+            - containerPort: 80
+              name: httpport
+          image: nginx:1.16
+          imagePullPolicy: IfNotPresent

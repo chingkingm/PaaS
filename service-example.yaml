@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: firstservice
+  namespace: myspace
+  labels:
+    app: svc
+spec:
+  selector:
+    app: test
+  ports:
+    - port: 8080
+      targetPort: 80

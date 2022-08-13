@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wpdeploy
+  namespace: myns01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wp
+  template:
+    metadata:
+      name: wptemplate
+      labels:
+        app: wp
+    spec:
+      containers:
+        - name: wordpress
+          ports:
+            - containerPort: 80
+              name: wpport
+          image: wordpress:5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lampsecret
+                  key: userpassword
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: lampconfig
+                  key: user
+            - name: WORDPRESS_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: lampconfig
+                  key: database
+            - name: WORDPRESS_DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: lampconfig
+                  key: dbhost
+            - name: WORDPRESS_TABLE_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  name: lampconfig
+                  key: tableprfix
+          volumeMounts:
+            - name: wpvolume
+              mountPath: /var/www/html
+      volumes:
+        - name: wpvolume
+          persistentVolumeClaim:
+            claimName: wpvc

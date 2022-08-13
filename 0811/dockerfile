@@ -1,0 +1,6 @@
+FROM centos:7
+MAINTAINER chenhaoyong
+COPY /redis-6.2.0/src /usr/local/bin
+EXPOSE 6379
+WORKDIR /usr/local/bin
+CMD redis-server

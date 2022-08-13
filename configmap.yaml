@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lampconfig
+  namespace: myns01
+data:
+  user: user_wp # wordpress使用的用户
+  database: wp  # wordpress用的数据库
+  dbhost: db  # mysql所在的位置，目前是占位的，后续换成ip
+  tableprfix: wp_ # WordPress用的表的名字前缀

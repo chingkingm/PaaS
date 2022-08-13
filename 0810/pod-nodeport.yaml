@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nodeport
+  labels:
+    name: net
+spec:
+  containers:
+    - image: nginx:1.16
+      name: nodeport
+      imagePullPolicy: IfNotPresent
+      ports:
+        - containerPort: 80
+          
